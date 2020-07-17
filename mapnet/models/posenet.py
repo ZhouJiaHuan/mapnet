@@ -62,6 +62,7 @@ class MapNet(PoseNet):
     def forward(self, x):
         s = x.size()
         x = x.view(-1, *s[2:])
+        print(x.size())
         poses = super().forward(x)
         poses = poses.view(s[0], s[1], -1)
         return poses
