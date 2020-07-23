@@ -250,6 +250,7 @@ configs/
 data/
 logs/
 test_codes/
+app/
 .vscode/
 *.pyc
 *.out

@@ -10,8 +10,6 @@ Composite data-loaders derived from class specific data loaders
 import numpy as np
 import torch
 from torch.utils import data
-from .seven_scenes import SevenScenes
-from .uno_robot import UnoRobot
 
 from ..registry import DATASETS
 from ..builder import build_dataset

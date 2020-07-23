@@ -131,8 +131,7 @@ class Inference(object):
             # take the middle prediction
             pred_poses[idx, :] = output[len(output)//2]
             targ_poses[idx, :] = target[len(target)//2]
-            print(idx)
-            print(pred_poses[idx, ])
+
         print('Image {:d} / {:d}'.format(len(loader), len(loader)))
 
         dim3 = data_set.dim3 if hasattr(data_set, 'dim3') else False

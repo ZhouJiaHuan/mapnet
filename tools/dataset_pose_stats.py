@@ -1,7 +1,8 @@
 """
 compute the pose statics for dataset, only support 7-Scene-like dataset
 """
-import os
+
+import glob
 import os.path as osp
 import numpy as np
 import argparse
@@ -25,16 +26,13 @@ def parse_poses(dataset, scene):
     split_file = osp.join(data_path, 'TrainSplit.txt')
     assert osp.exists(split_file)
     with open(split_file, 'r') as f:
-        seqs = [int(l.split('sequence')[-1]) for l in f if not l.startswith('#')]
+        seqs = [int(l.split('sequence')[-1]) for l in f
+                if not l.startswith('#')]
     pss = []
     for seq in seqs:
         seq_dir = osp.join(data_path, 'seq-{:02d}'.format(seq))
-        p_filenames = [n for n in os.listdir(osp.join(seq_dir, '.')) if
-                       n.find('pose') >= 0]
-
-        frame_idx = np.array(range(len(p_filenames)), dtype=np.int)
-        ps = [np.loadtxt(osp.join(seq_dir, 'frame-{:06d}.pose.txt'.
-              format(i)))[:3, 3] for i in frame_idx]
+        ps = [np.loadtxt(pose_txt)[:3, 3] for pose_txt in
+              glob.glob(osp.join(seq_dir, '*.pose.txt'))]
         pss.extend(ps)
     return np.array(pss)
 
@@ -42,7 +40,7 @@ def parse_poses(dataset, scene):
 if __name__ == "__main__":
     args = parse_args()
     pss_array = parse_poses(args.dataset, args.scene)
-    print(pss_array.shape)
+    print("pose shape = ", pss_array.shape)
     pss_mean = np.mean(pss_array, axis=0)
     pss_std = np.std(pss_array, axis=0)
     print("pose mean = {}".format(pss_mean))
