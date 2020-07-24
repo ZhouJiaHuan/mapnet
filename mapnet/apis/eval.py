@@ -84,6 +84,8 @@ class Inference(object):
             ax.plot(x, y, c='b')
             ax.scatter(x[0, :], y[0, :], c='r')
             ax.scatter(x[1, :], y[1, :], c='g')
+            for i in range(0, x.shape[1], 50):
+                ax.text(x[0][i], y[0][i], i)
         else:
             z = np.vstack((pred_poses[::ss, 2].T, targ_poses[::ss, 2].T))
             for xx, yy, zz in zip(x.T, y.T, z.T):
@@ -91,6 +93,9 @@ class Inference(object):
             ax.scatter(x[0, :], y[0, :], zs=z[0, :], c='r', depthshade=0)
             ax.scatter(x[1, :], y[1, :], zs=z[1, :], c='g', depthshade=0)
             ax.view_init(azim=119, elev=13)
+            for i in range(0, x.shape[1], 50):
+                ax.text(x[0][i], y[0][i], z[0][i], i)
+        plt.grid()
         if show:
             plt.show(block=True)
         return fig
