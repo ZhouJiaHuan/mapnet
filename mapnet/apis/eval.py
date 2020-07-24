@@ -17,6 +17,8 @@ from mapnet.utils.pose_utils import quaternion_angular_error as qae
 
 
 class Inference(object):
+    """inference for posenet/mapnet
+    """
     def __init__(self, cfgs, weights):
         self.cfgs = cfgs
         self.model_cfgs = cfgs.model
@@ -51,7 +53,6 @@ class Inference(object):
 
     def _build_val_dataset(self, data_cfgs, tform_cfgs, val=True,
                            with_loader=True, num_workers=5):
-        
         data_trans, target_trans = build_transforms(**tform_cfgs)
 
         data_cfgs.train = True if not val else False
@@ -95,6 +96,8 @@ class Inference(object):
         return fig
 
     def eval_inference(self, val=True, show=False):
+        ''' one epoch inference phase
+        '''
         data_set, loader = self._build_val_dataset(self.data_cfgs,
                                                    self.tform_cfgs,
                                                    val=val,
@@ -151,6 +154,8 @@ class Inference(object):
         return t_loss, q_loss
 
     def test_image(self, img):
+        '''inference with one image
+        '''
         pred_pose = np.zeros(7)
         pose_m = np.array(self.data_cfgs.mean_t)
         pose_s = np.array(self.data_cfgs.std_t)

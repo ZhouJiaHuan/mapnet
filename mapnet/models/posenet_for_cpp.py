@@ -1,5 +1,11 @@
 """
 implementation of PoseNet and MapNet networks
+
+The PoseNetCpp and MapNetCpp implemented here are totally
+same with that in `posenet.py`.
+
+This implement is only for converting the Torch model with
+TorchScript, which can be used for model loading in Cpp with `libTorch`
 """
 import torch
 import torch.nn as nn

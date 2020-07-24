@@ -55,7 +55,11 @@ class PoseNet(nn.Module):
 
 @MODELS.register_module(name='MapNet')
 class MapNet(PoseNet):
-
+    ''' mapnet class derived from PoseNet
+    for the relative loss function in mapnet, the input dim is
+    different from that in PoseNet. see `MapNetCriterion` for
+    more details.
+    '''
     def __init__(self, *args, **kwargs):
         super(MapNet, self).__init__(*args, **kwargs)
 
