@@ -13,7 +13,6 @@ try:
     with_tensorboard = True
 except Exception:
     with_tensorboard = False
-    print("tensorboardX not found!")
 from ..utils.logger import Logger, AverageMeter
 
 
@@ -296,6 +295,8 @@ class Trainer(object):
             if hasattr(self.train_criterion, 'srq'):
                 srq = self.train_criterion.srq
                 self.writer.add_scalar('params/srq', srq, epoch)
+        else:
+            print("tensorboardX not found!")
 
     def train_val(self):
         """
