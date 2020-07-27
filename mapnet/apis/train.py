@@ -8,7 +8,12 @@ import torch.utils.data
 from torch.utils.data import DataLoader
 from torch.utils.data.dataloader import default_collate
 from torch.autograd import Variable
-from tensorboardX import SummaryWriter
+try:
+    from tensorboardX import SummaryWriter
+    with_tensorboard = True
+except Exception:
+    with_tensorboard = False
+    print("tensorboardX not found!")
 from ..utils.logger import Logger, AverageMeter
 
 
@@ -277,19 +282,20 @@ class Trainer(object):
         end = time.time()
 
         # write to tensorboard
-        self.writer.add_scalar('scalar/train_loss', loss, epoch)
-        if hasattr(self.train_criterion, 'sax'):
-            sax = self.train_criterion.sax
-            self.writer.add_scalar('params/sax', sax, epoch)
-        if hasattr(self.train_criterion, 'saq'):
-            saq = self.train_criterion.saq
-            self.writer.add_scalar('params/saq', saq, epoch)
-        if hasattr(self.train_criterion, 'srx'):
-            srx = self.train_criterion.srx
-            self.writer.add_scalar('params/srx', srx, epoch)
-        if hasattr(self.train_criterion, 'srq'):
-            srq = self.train_criterion.srq
-            self.writer.add_scalar('params/srq', srq, epoch)
+        if with_tensorboard:
+            self.writer.add_scalar('scalar/train_loss', loss, epoch)
+            if hasattr(self.train_criterion, 'sax'):
+                sax = self.train_criterion.sax
+                self.writer.add_scalar('params/sax', sax, epoch)
+            if hasattr(self.train_criterion, 'saq'):
+                saq = self.train_criterion.saq
+                self.writer.add_scalar('params/saq', saq, epoch)
+            if hasattr(self.train_criterion, 'srx'):
+                srx = self.train_criterion.srx
+                self.writer.add_scalar('params/srx', srx, epoch)
+            if hasattr(self.train_criterion, 'srq'):
+                srq = self.train_criterion.srq
+                self.writer.add_scalar('params/srq', srq, epoch)
 
     def train_val(self):
         """
