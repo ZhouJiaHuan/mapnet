@@ -1,0 +1,66 @@
+common:
+  n_epochs: 300
+  batch_size: 20
+  do_val: True
+  seed: 7
+  shuffle: True
+  num_workers: 5
+  snapshot: 50
+  val_freq: 50
+  max_grad_norm: 0
+  print_freq: 20
+  cuda: True
+
+model:
+  type: PoseNet
+  backbone:
+    type: ResNet34
+    pretrained: True
+  pretrained: True
+  droprate: 0.5
+  feat_dim: 2048
+
+transform:
+  size: 256
+  color_jitter: 0.7
+  mean:
+    - 0.4647876
+    - 0.4592525
+    - 0.4659130
+  std:
+    - 0.27758152
+    - 0.27531818
+    - 0.26315984
+
+dataset:
+  type: SevenScenes
+  scene: heads
+  data_path: data/deepslam_data/SevenScenes
+  mean_t:
+    - 0
+    - 0
+    - 0
+  std_t:
+    - 1
+    - 1
+    - 1
+  mode: 0
+  skip_images: False
+
+train_loss:
+  type: PoseNetCriterion
+  sax: 0.0
+  saq: -3.0
+  learn_beta: True
+
+val_loss:
+  type: PoseNetCriterion
+  sax: 0.0
+  saq: 0.0
+  learn_beta: False
+
+optim:
+  type: Optimizer
+  method: adam
+  base_lr: 1.0e-4
+  weight_decay: 0.0005

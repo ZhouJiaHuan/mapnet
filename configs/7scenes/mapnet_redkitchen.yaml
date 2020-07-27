@@ -1,0 +1,77 @@
+common:
+  n_epochs: 300
+  batch_size: 20
+  do_val: True
+  seed: 7
+  shuffle: True
+  num_workers: 5
+  snapshot: 50
+  val_freq: 50
+  max_grad_norm: 0
+  print_freq: 20
+  cuda: True
+
+model:
+  type: MapNet
+  backbone:
+    type: ResNet34
+    pretrained: True
+  pretrained: True
+  droprate: 0.5
+  feat_dim: 2048
+
+transform:
+  size: 256
+  color_jitter: 0.7
+  mean:
+    - 0.52621722
+    - 0.44004531
+    - 0.43208462
+  std:
+    - 0.22073649
+    - 0.25463823
+    - 0.23925417
+
+dataset:
+  type: MF
+  name: SevenScenes
+  no_duplicates: False
+  scene: redkitchen
+  data_path: data/deepslam_data/SevenScenes
+  mean_t:
+    - 0.0
+    - 0.0
+    - 0.0
+  std_t:
+    - 1.0
+    - 1.0
+    - 1.0
+  mode: 0
+  skip_images: False
+  skip: 10
+  steps: 3
+  variable_skip: False
+
+train_loss:
+  type: MapNetCriterion
+  sax: 0.0
+  saq: -3.0
+  srx: 0.0
+  srq: -3.0
+  learn_beta: True
+  learn_gamma: True
+
+val_loss:
+  type: MapNetCriterion
+  sax: 0.0
+  saq: 0.0
+  srx: 0.0
+  srq: 0.0
+  learn_beta: False
+  learn_gamma: False
+
+optim:
+  type: Optimizer
+  method: adam
+  base_lr: 1.0e-4
+  weight_decay: 0.0005

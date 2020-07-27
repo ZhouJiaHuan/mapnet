@@ -1,0 +1,65 @@
+common:
+  n_epochs: 300
+  batch_size: 20
+  do_val: True
+  seed: 7
+  shuffle: True
+  num_workers: 5
+  snapshot: 10
+  val_freq: 10
+  max_grad_norm: 0
+  print_freq: 20
+  cuda: True
+
+model:
+  type: PoseNet
+  backbone:
+    type: ResNet34
+    pretrained: True
+  pretrained: True
+  droprate: 0.5
+  feat_dim: 2048
+
+transform:
+  size: 256
+  color_jitter: 0.7
+  mean:
+    - 0.43970694
+    - 0.42746162
+    - 0.42152078
+  std:
+    - 0.1733544
+    - 0.18031195
+    - 0.18873666
+
+dataset:
+  type: UnoRobot
+  scene: corridor
+  data_path: data/deepslam_data/UnoRobot
+  mean_t:
+    - -2.1957749
+    - -4.50986271
+    - -0.04723239
+  std_t:
+    - 6.75217998
+    - 4.703917
+    - 0.13265884
+  skip_images: False
+
+train_loss:
+  type: PoseNetCriterion
+  sax: 0.0
+  saq: -3.0
+  learn_beta: True
+
+val_loss:
+  type: PoseNetCriterion
+  sax: 0.0
+  saq: 0.0
+  learn_beta: False
+
+optim:
+  type: Optimizer
+  method: adam
+  base_lr: 1.0e-4
+  weight_decay: 0.0005

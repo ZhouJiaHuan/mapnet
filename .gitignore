@@ -246,7 +246,7 @@ data/*
 .vscode/*
 test_codes/*
 
-configs/
+
 data/
 logs/
 test_codes/
