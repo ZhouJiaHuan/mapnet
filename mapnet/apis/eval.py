@@ -151,8 +151,15 @@ class Inference(object):
         def t_criterion(t_pred, t_gt):
             return np.linalg.norm(t_pred - t_gt)
 
+        tx_loss = np.asarray([t_criterion(p, t) for p, t in
+                             zip(pred_poses[:, 0], targ_poses[:, 0])])
+        ty_loss = np.asarray([t_criterion(p, t) for p, t in
+                             zip(pred_poses[:, 1], targ_poses[:, 1])])
+        tz_loss = np.asarray([t_criterion(p, t) for p, t in
+                             zip(pred_poses[:, 2], targ_poses[:, 2])])
         t_loss = np.asarray([t_criterion(p, t) for p, t in
-                            zip(pred_poses[:, :3], targ_poses[:, :3])])
+                             zip(pred_poses[:, :3], targ_poses[:, :3])])
+        t_loss = [tx_loss, ty_loss, tz_loss, t_loss]
         q_loss = np.asarray([qae(p, t) for p, t in
                             zip(pred_poses[:, 3:], targ_poses[:, 3:])])
 

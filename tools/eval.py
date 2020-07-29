@@ -42,10 +42,16 @@ def main():
     pred_poses, targ_poses, fig = infer.eval_inference(args.val, args.show)
 
     t_loss, q_loss = infer.val_loss(pred_poses, targ_poses)
-    print('Error in translation: median {:3.2f} m,  mean {:3.2f} m\n' \
-          'Error in rotation: median {:3.2f} degrees, mean {:3.2f} degree' \
-          .format(np.median(t_loss), np.mean(t_loss), np.median(q_loss),
-                  np.mean(q_loss)))
+    print("Error in translation x : median {:3.2f} m,  mean {:3.2f} m"
+          .format(np.median(t_loss[0]), np.mean(t_loss[0])))
+    print("Error in translation y loss: median {:3.2f} m,  mean {:3.2f} m"
+          .format(np.median(t_loss[1]), np.mean(t_loss[1])))
+    print("Error in translation z loss: median {:3.2f} m,  mean {:3.2f} m"
+          .format(np.median(t_loss[2]), np.mean(t_loss[2])))
+    print("Error in translation loss: median {:3.2f} m,  mean {:3.2f} m"
+          .format(np.median(t_loss[3]), np.mean(t_loss[3])))
+    print("Error in rotation: median {:3.2f} degrees, mean {:3.2f} degree"
+          .format(np.median(q_loss), np.mean(q_loss)))
 
     if args.output_dir is not None:
         image_file = osp.join(args.output_dir, 'result.png')
