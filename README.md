@@ -155,12 +155,14 @@ Experimental result with `mapnet` on `SevenScenes` :
 | Stairs      | 0.30 m, 12.08 degree | 0.35 m, 10.99 degree              |
 | **Average** | 0.21 m, 7.77 degree  | 0.26 m, 8.48 degree               |
 
-Experimental results with on our own data `UnoRobot`:
+Experimental results (median / mean error) with on our own data `UnoRobot`:
 
-| Model   | translate | rotation    |
-| ------- | --------- | ----------- |
-| MapNet  | 0.44 m    | 4.19 degree |
-| PoseNet | 0.64 m    | 4.45 degree |
+| Model   | translate_x (m) | translate_y (m) | translate_z (m) | rotation (degree) |
+| ------- | --------------- | --------------- | --------------- | ----------------- |
+| MapNet  | 0.23 / 0.37     | 0.25 / 0.36     | 0.04 / 0.06     | 4.19  / 8.21      |
+| PoseNet | 0.44 / 0.60     | 0.32 / 0.43     | 0.04 / 0.06     | 4.45 / 9.25       |
+| AtLoc   | 0.33 / 0.51     | 0.29 / 0.42     | 0.04 / 0.06     | 4.23 / 7.79       |
+| AtLoc++ | 0.33 / 0.43     | 0.26 / 0.41     | 0.04 / 0.06     | 4.47 / 9.42       |
 
 ![mapnet_epoch-300_val](images/mapnet_epoch-300_val.png)
 
