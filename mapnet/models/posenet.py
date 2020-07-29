@@ -6,6 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init
 
+from .att import AttentionBlock
 from ..registry import MODELS
 
 
@@ -62,6 +63,45 @@ class MapNet(PoseNet):
     '''
     def __init__(self, *args, **kwargs):
         super(MapNet, self).__init__(*args, **kwargs)
+
+    def forward(self, x):
+        s = x.size()
+        x = x.view(-1, *s[2:])
+        poses = super().forward(x)
+        poses = poses.view(s[0], s[1], -1)
+        return poses
+
+
+@MODELS.register_module(name='AtLoc')
+class AtLoc(PoseNet):
+    ''' AtLoc class derived from PoseNet
+    '''
+    def __init__(self, feat_dim=2048, **kwargs):
+        super(AtLoc, self).__init__(feat_dim=feat_dim, **kwargs)
+        self.att = AttentionBlock(feat_dim)
+        for m in self.att.modules():
+            if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+                nn.init.kaiming_normal_(m.weight.data)
+                if m.bias is not None:
+                    nn.init.constant_(m.bias.data, 0)
+
+    def forward(self, x):
+        x = self.backbone(x)
+        x = F.relu(x)
+        x = self.att(x.view(x.size(0), -1))
+        if self.droprate > 0:
+            x = F.dropout(x, p=self.droprate, training=self.training)
+        xyz = self.fc_xyz(x)
+        wpqr = self.fc_wpqr(x)
+        return torch.cat((xyz, wpqr), 1)
+
+
+@MODELS.register_module(name='AtLocPlus')
+class AtLocPlus(AtLoc):
+    ''' AtLocPlus class derived from AtLoc
+    '''
+    def __init__(self, *args, **kwargs):
+        super(AtLocPlus, self).__init__(*args, **kwargs)
 
     def forward(self, x):
         s = x.size()
