@@ -13,7 +13,7 @@ from mapnet.builder import build_loss, build_optimizer
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Training script')
-    parser.add_argument('--config_file', type=str,
+    parser.add_argument('--config', type=str,
                         help='configuration file')
     parser.add_argument('--logdir', type=str,
                         help='Experiment work directory')
@@ -30,7 +30,7 @@ def parse_args():
 def main():
     args = parse_args()
     assert args.logdir, "work dir is not specified!"
-    cfgs = Config.fromfile(args.config_file)
+    cfgs = Config.fromfile(args.config)
 
     # build model with cfg
     model_cfgs = cfgs.model
@@ -62,8 +62,8 @@ def main():
     optimizer = build_optimizer(optim_cfgs)
 
     # build dataset with cfg
-    tform_cfgs = cfgs.transform
-    data_trans, target_trans = build_transforms(**tform_cfgs)
+    tform_cfgs = cfgs.train_transform
+    data_trans, target_trans = build_transforms(tform_cfgs)
     data_cfgs = cfgs.dataset
     data_cfgs.transform = data_trans
     data_cfgs.target_transform = target_trans

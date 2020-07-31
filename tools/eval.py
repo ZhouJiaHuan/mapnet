@@ -15,7 +15,7 @@ from mapnet.apis import Inference
 def parse_args():
     # config
     parser = argparse.ArgumentParser(description='Evaluation script')
-    parser.add_argument('--config_file', type=str, required=True,
+    parser.add_argument('--config', type=str, required=True,
                         help='configuration file')
     parser.add_argument('--weights', type=str, required=True,
                         help='trained weights to load')
@@ -37,7 +37,7 @@ def main():
     assert osp.exists(args.weights)
     if 'CUDA_VISIBLE_DEVICES' not in os.environ:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.device
-    cfgs = Config.fromfile(args.config_file)
+    cfgs = Config.fromfile(args.config)
     infer = Inference(cfgs, args.weights)
     pred_poses, targ_poses, fig = infer.eval_inference(args.val, args.show)
 

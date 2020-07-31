@@ -1,6 +1,6 @@
 common:
   n_epochs: 300
-  batch_size: 20
+  batch_size: 32
   do_val: True
   seed: 7
   shuffle: True
@@ -20,17 +20,38 @@ model:
   droprate: 0.5
   feat_dim: 2048
 
-transform:
-  size: 256
-  color_jitter: 0.7
-  mean:
-    - 0.43970694
-    - 0.42746162
-    - 0.42152078
-  std:
-    - 0.1733544
-    - 0.18031195
-    - 0.18873666
+train_transform:
+  - type: 'Resize'
+    size: 256
+  - type: 'ColorJitter'
+    brightness: 0.7
+    contrast: 0.7
+    saturation: 0.7
+    hue: 0.5
+  - type: 'ToTensor'
+  - type: 'Normalize'
+    mean:
+      - 0.43970694
+      - 0.42746162
+      - 0.42152078
+    std:
+      - 0.1733544
+      - 0.18031195
+      - 0.18873666
+
+val_transform:
+  - type: 'Resize'
+    size: 256
+  - type: 'ToTensor'
+  - type: 'Normalize'
+    mean:
+      - 0.43970694
+      - 0.42746162
+      - 0.42152078
+    std:
+      - 0.1733544
+      - 0.18031195
+      - 0.18873666
 
 dataset:
   type: UnoRobot
@@ -48,7 +69,7 @@ dataset:
 
 train_loss:
   type: PoseNetCriterion
-  sax: 0.0
+  sax: -3.0
   saq: -3.0
   learn_beta: True
 

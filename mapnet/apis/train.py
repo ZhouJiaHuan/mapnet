@@ -116,16 +116,9 @@ class Trainer(object):
         General purpose training script
 
         Args:
-            model: Network model
-            optimizer: object of the Optimizer class, wrapping torch.optim
-            train_criterion: Training loss function
-            common_cfgs: common training parameters
-            train_dataset: PyTorch dataset
-            val_dataset: PyTorch dataset
-            device: IDs of the GPUs to use - value of $CUDA_VISIBLE_DEVICES
+            train_cfgs: common training parameters
             checkpoint_file: Name of file with saved weights and optim params
             resume_optim: whether to resume optimization
-            val_criterion: loss function to be used for validation
         """
         self.cfgs = train_cfgs
         self.model = self.cfgs.pop('model')
@@ -186,8 +179,8 @@ class Trainer(object):
                 c_state = cpt['criterion_state_dict']
                 params = self.train_criterion.named_parameters()
                 append_dict = {k: torch.Tensor([0.0])
-                                for k, _ in params
-                                if k not in c_state}
+                               for k, _ in params
+                               if k not in c_state}
             c_state.update(append_dict)
             self.train_criterion.load_state_dict(c_state)
         print('Loaded from {:s} epoch {:d}'.format(cpt_file, cpt['epoch']))

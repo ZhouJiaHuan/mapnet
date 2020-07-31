@@ -20,17 +20,38 @@ model:
   droprate: 0.5
   feat_dim: 2048
 
-transform:
-  size: 256
-  color_jitter: 0.7
-  mean:
-    - 0.4472715
-    - 0.4312183
-    - 0.4291487
-  std:
-    - 0.18051539
-    - 0.16182512
-    - 0.10994798
+train_transform:
+  - type: 'Resize'
+    size: 256
+  - type: 'ColorJitter'
+    brightness: 0.7
+    contrast: 0.7
+    saturation: 0.7
+    hue: 0.5
+  - type: 'ToTensor'
+  - type: 'Normalize'
+    mean:
+      - 0.4943200
+      - 0.4268097
+      - 0.4339257
+    std:
+      - 0.20226764
+      - 0.21839666
+      - 0.20558356
+
+val_transform:
+  - type: 'Resize'
+    size: 256
+  - type: 'ToTensor'
+  - type: 'Normalize'
+    mean:
+      - 0.4943200
+      - 0.4268097
+      - 0.4339257
+    std:
+      - 0.20226764
+      - 0.21839666
+      - 0.20558356
 
 dataset:
   type: MF

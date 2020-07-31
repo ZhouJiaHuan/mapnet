@@ -1,6 +1,6 @@
 common:
   n_epochs: 300
-  batch_size: 20
+  batch_size: 32
   do_val: True
   seed: 7
   shuffle: True
@@ -12,7 +12,7 @@ common:
   cuda: True
 
 model:
-  type: MapNet
+  type: AtLocPlus
   backbone:
     type: ResNet34
     pretrained: True
@@ -23,6 +23,8 @@ model:
 train_transform:
   - type: 'Resize'
     size: 256
+  - type: 'RandomCrop'
+    size: 224
   - type: 'ColorJitter'
     brightness: 0.7
     contrast: 0.7
@@ -31,43 +33,44 @@ train_transform:
   - type: 'ToTensor'
   - type: 'Normalize'
     mean:
-      - 0.4943200
-      - 0.4268097
-      - 0.4339257
+      - 0.43970694
+      - 0.42746162
+      - 0.42152078
     std:
-      - 0.20226764
-      - 0.21839666
-      - 0.20558356
+      - 0.1733544
+      - 0.18031195
+      - 0.18873666
 
 val_transform:
   - type: 'Resize'
     size: 256
+  - type: 'CenterCrop'
+    size: 224
   - type: 'ToTensor'
   - type: 'Normalize'
     mean:
-      - 0.4943200
-      - 0.4268097
-      - 0.4339257
+      - 0.43970694
+      - 0.42746162
+      - 0.42152078
     std:
-      - 0.20226764
-      - 0.21839666
-      - 0.20558356
+      - 0.1733544
+      - 0.18031195
+      - 0.18873666
 
 dataset:
   type: MF
-  name: SevenScenes
+  name: UnoRobot
   no_duplicates: False
-  scene: pumpkin
-  data_path: data/deepslam_data/SevenScenes
+  scene: corridor
+  data_path: data/deepslam_data/UnoRobot
   mean_t:
-    - 0.0
-    - 0.0
-    - 0.0
+    - -2.1957749
+    - -4.50986271
+    - -0.04723239
   std_t:
-    - 1.0
-    - 1.0
-    - 1.0
-  mode: 0
+    - 6.75217998
+    - 4.703917
+    - 0.13265884
   skip_images: False
   skip: 10
   steps: 3
@@ -75,9 +78,9 @@ dataset:
 
 train_loss:
   type: MapNetCriterion
-  sax: 0.0
+  sax: -3.0 # 0 -> -3.0
   saq: -3.0
-  srx: 0.0
+  srx: -3.0
   srq: -3.0
   learn_beta: True
   learn_gamma: True

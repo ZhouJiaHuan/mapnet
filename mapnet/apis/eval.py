@@ -26,8 +26,7 @@ class Inference(object):
         self.model = self._build_val_model(cfgs.model, weights)
         self.model.eval()
         self.data_cfgs = cfgs.dataset
-        self.tform_cfgs = cfgs.transform
-        self.tform_cfgs.color_jitter = -1  # ignore the color jitter
+        self.tform_cfgs = cfgs.val_transform
 
     def _build_val_model(self, model_cfgs, weights):
         backbone_cfg = model_cfgs.backbone
@@ -53,7 +52,7 @@ class Inference(object):
 
     def _build_val_dataset(self, data_cfgs, tform_cfgs, val=True,
                            with_loader=True, num_workers=5):
-        data_trans, target_trans = build_transforms(**tform_cfgs)
+        data_trans, target_trans = build_transforms(tform_cfgs)
 
         data_cfgs.train = True if not val else False
         data_cfgs.transform = data_trans
@@ -173,7 +172,7 @@ class Inference(object):
         pose_s = np.array(self.data_cfgs.std_t)
         data_trans, _ = build_transforms(**self.tform_cfgs)
         img = data_trans(img)
-        if self.data_cfgs.type == 'MF':  # only for mapnet
+        if self.data_cfgs.type == 'MF':  # for MapNet and AtLoc++
             img = img.unsqueeze(0)  # step dim
         img = img.unsqueeze(0)  # batch dim
         _, output = step_feedfwd(img, self.model, self.CUDA, train=False)
