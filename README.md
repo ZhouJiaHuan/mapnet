@@ -25,7 +25,7 @@ This repository made the following modifications compared to official implements
 
 - update PyTorch 0.4.1 to PyTorch 1.5.1
 
-- Manage the classes (DATASET, MODEL, BACKBONE, CRITERION, OPTIMIZER) with a unified Register in `mmcv` for code simplicity
+- Manage the classes (DATASETS, MODELS, BACKBONES, CRITERION, OPTIMIZER, PIPELINES) with a unified Register in `mmcv` for code simplicity
 
 - Parameters are all specified with `.yaml` configure files. For example, the configure for training and testing the `mapnet` on `SevenScenes` is as follows:
 
@@ -52,17 +52,38 @@ This repository made the following modifications compared to official implements
     droprate: 0.5
     feat_dim: 2048
   
-  transform:
-    size: 256
-    color_jitter: 0.7
-    mean:
-      - 0.4943200
-      - 0.4268097
-      - 0.4339257
-    std:
-      - 0.20226764
-      - 0.21839666
-      - 0.20558356
+  train_transform:
+    - type: 'Resize'
+      size: 256
+    - type: 'ColorJitter'
+      brightness: 0.7
+      contrast: 0.7
+      saturation: 0.7
+      hue: 0.5
+    - type: 'ToTensor'
+    - type: 'Normalize'
+      mean:
+        - 0.4943200
+        - 0.4268097
+        - 0.4339257
+      std:
+        - 0.20226764
+        - 0.21839666
+        - 0.20558356
+  
+  val_transform:
+    - type: 'Resize'
+      size: 256
+    - type: 'ToTensor'
+    - type: 'Normalize'
+      mean:
+        - 0.4943200
+        - 0.4268097
+        - 0.4339257
+      std:
+        - 0.20226764
+        - 0.21839666
+        - 0.20558356
   
   dataset:
     type: MF
@@ -116,7 +137,9 @@ This repository made the following modifications compared to official implements
 
 ![tensorboard1](images/tensorboard1.png) 
 
-for training and testing, using the command below:
+# Experiments
+
+For training and testing the model, using the command below:
 
 - training `mapnet` on `SevenScenes` `chess`
 
@@ -155,17 +178,29 @@ Experimental result with `mapnet` on `SevenScenes` :
 | Stairs      | 0.30 m, 12.08 degree | 0.35 m, 10.99 degree              |
 | **Average** | 0.21 m, 7.77 degree  | 0.26 m, 8.48 degree               |
 
-Experimental results (median / mean error) with on our own data `UnoRobot`:
+Experimental results (median / mean error) on our own data `UnoRobot`:
 
-| Model   | translate_x (m) | translate_y (m) | translate_z (m) | rotation (degree) |
-| ------- | --------------- | --------------- | --------------- | ----------------- |
-| MapNet  | 0.23 / 0.37     | 0.25 / 0.36     | 0.04 / 0.06     | 4.19  / 8.21      |
-| PoseNet | 0.44 / 0.60     | 0.32 / 0.43     | 0.04 / 0.06     | 4.45 / 9.25       |
-| AtLoc   | 0.33 / 0.51     | 0.29 / 0.42     | 0.04 / 0.06     | 4.23 / 7.79       |
-| AtLoc++ | 0.33 / 0.43     | 0.26 / 0.41     | 0.04 / 0.06     | 4.47 / 9.42       |
+| Model          | translate_x (m) | translate_y (m) | translate_z (m) | translate (m)   | rotation (degree) |
+| -------------- | --------------- | --------------- | --------------- | --------------- | ----------------- |
+| PoseNet        | 0.22 / 0.50     | 0.26 / 0.44     | 0.04 / 0.06     | 0.42 / 0.74     | 5.49 / 9.71       |
+| MapNet         | 0.28 / 0.37     | 0.23 / 0.32     | 0.04 / 0.06     | 0.46 / 0.56     | **4.40**  / 8.27  |
+| AtLoc          | 0.24 / 0.52     | 0.28 / 0.43     | 0.04 / 0.06     | 0.47 / 0.77     | 5.04 / 9.01       |
+| AtLoc++        | 0.21 / 0.30     | 0.27 / 0.39     | 0.04 / 0.06     | 0.45 / 0.56     | 5.59 / 9.82       |
+| PoseNet + crop | 0.30 / 0.40     | 0.27 / 0.35     | 0.04 / 0.06     | 0.54 / 0.60     | 4.82 / **6.92**   |
+| MapNet + crop  | 0.22 / 0.29     | **0.21 / 0.31** | 0.04 / 0.06     | **0.40 / 0.48** | 5.55 / 7.55       |
+| AtLoc + crop   | **0.20 / 0.26** | 0.29 / 0.35     | 0.04 / 0.06     | 0.46 / 0.50     | 5.25 / 7.75       |
+| AtLoc++ + crop | 0.22 / 0.28     | 0.22 / 0.34     | 0.04 / 0.06     | 0.41 / 0.50     | 5.48 / 7.99       |
+
+- PoseNet
+
+![posenet_epoch-300_val](images/posenet_epoch-300_val.png)
+
+- MapNet
 
 ![mapnet_epoch-300_val](images/mapnet_epoch-300_val.png)
 
+- AtLoc![atloc_epoch-300_val](images/atloc_epoch-300_val.png)
 
+- AtlocPlus
 
-![posenet_epoch-300_val](images/posenet_epoch-300_val.png)
+  ![atlocplus_epoch-300_val](images/atlocplus_epoch-300_val.png)
