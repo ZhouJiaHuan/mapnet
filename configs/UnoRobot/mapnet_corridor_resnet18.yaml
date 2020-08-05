@@ -1,0 +1,97 @@
+common:
+  n_epochs: 300
+  batch_size: 32
+  do_val: True
+  seed: 7
+  shuffle: True
+  num_workers: 5
+  snapshot: 50
+  val_freq: 50
+  max_grad_norm: 0
+  print_freq: 20
+  cuda: True
+
+model:
+  type: MapNet
+  backbone:
+    type: ResNet18
+    pretrained: True
+  pretrained: True
+  droprate: 0.5
+  feat_dim: 2048
+
+train_transform:
+  - type: 'Resize'
+    size: 256
+  - type: 'ColorJitter'
+    brightness: 0.7
+    contrast: 0.7
+    saturation: 0.7
+    hue: 0.5
+  - type: 'ToTensor'
+  - type: 'Normalize'
+    mean:
+      - 0.43970694
+      - 0.42746162
+      - 0.42152078
+    std:
+      - 0.1733544
+      - 0.18031195
+      - 0.18873666
+
+val_transform:
+  - type: 'Resize'
+    size: 256
+  - type: 'ToTensor'
+  - type: 'Normalize'
+    mean:
+      - 0.43970694
+      - 0.42746162
+      - 0.42152078
+    std:
+      - 0.1733544
+      - 0.18031195
+      - 0.18873666
+
+dataset:
+  type: MF
+  name: UnoRobot
+  no_duplicates: False
+  scene: corridor
+  data_path: data/deepslam_data/UnoRobot
+  mean_t:
+    - -2.1957749
+    - -4.50986271
+    - -0.04723239
+  std_t:
+    - 6.75217998
+    - 4.703917
+    - 0.13265884
+  skip_images: False
+  skip: 10
+  steps: 3
+  variable_skip: False
+
+train_loss:
+  type: MapNetCriterion
+  sax: -3.0 # 0 -> -3.0
+  saq: -3.0
+  srx: -3.0 # 0 -> -3.0
+  srq: -3.0
+  learn_beta: True
+  learn_gamma: True
+
+val_loss:
+  type: MapNetCriterion
+  sax: 0.0
+  saq: 0.0
+  srx: 0.0
+  srq: 0.0
+  learn_beta: False
+  learn_gamma: False
+
+optim:
+  type: Optimizer
+  method: adam
+  base_lr: 1.0e-4
+  weight_decay: 0.0005
