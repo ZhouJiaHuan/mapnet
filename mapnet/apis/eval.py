@@ -170,7 +170,7 @@ class Inference(object):
         pred_pose = np.zeros(7)
         pose_m = np.array(self.data_cfgs.mean_t)
         pose_s = np.array(self.data_cfgs.std_t)
-        data_trans, _ = build_transforms(**self.tform_cfgs)
+        data_trans, _ = build_transforms(self.tform_cfgs)
         img = data_trans(img)
         if self.data_cfgs.type == 'MF':  # for MapNet and AtLoc++
             img = img.unsqueeze(0)  # step dim
