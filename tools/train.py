@@ -2,13 +2,14 @@
 training codes.
 """
 import argparse
-from mmcv import Config
+
 import sys
 sys.path.append('.')
 from mapnet.apis import Trainer
 from mapnet.datasets import build_transforms
 from mapnet.builder import build_backbone, build_dataset, build_model
 from mapnet.builder import build_loss, build_optimizer
+from mapnet.utils.yaml_utils import parse_yaml
 
 
 def parse_args():
@@ -30,7 +31,7 @@ def parse_args():
 def main():
     args = parse_args()
     assert args.logdir, "work dir is not specified!"
-    cfgs = Config.fromfile(args.config)
+    cfgs = parse_yaml(args.config)
 
     # build model with cfg
     model_cfgs = cfgs.model

@@ -1,4 +1,4 @@
-from mmcv.utils import build_from_cfg
+from mapnet.utils.registry import build_from_cfg
 from .registry import MODELS, DATASETS, BACKBONES, LOSSES, OPTIMIZER
 
 

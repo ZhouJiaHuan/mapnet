@@ -1,4 +1,4 @@
-from mmcv.utils import Registry
+from mapnet.utils.registry import Registry
 
 MODELS = Registry('models')
 DATASETS = Registry('datasets')

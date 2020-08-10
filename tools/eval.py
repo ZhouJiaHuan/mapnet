@@ -7,9 +7,10 @@ import os.path as osp
 import sys
 import numpy as np
 import pickle
-from mmcv import Config
+
 sys.path.append('.')
 from mapnet.apis import Inference
+from mapnet.utils.yaml_utils import parse_yaml
 
 
 def parse_args():
@@ -37,7 +38,8 @@ def main():
     assert osp.exists(args.weights)
     if 'CUDA_VISIBLE_DEVICES' not in os.environ:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.device
-    cfgs = Config.fromfile(args.config)
+
+    cfgs = parse_yaml(args.config)
     infer = Inference(cfgs, args.weights)
     pred_poses, targ_poses, fig = infer.eval_inference(args.val, args.show)
 
