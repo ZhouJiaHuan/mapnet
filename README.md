@@ -1,6 +1,10 @@
-This is the PyTorch implementation of the `MapNet` for 
+This is the PyTorch implementation camera localization for 
 
-"[Geometry-Aware Learning of Maps for Camera Localization](https://arxiv.org/abs/1712.03342)" - CVPR 2018 (Spotlight).
+- PoseNet: "[PoseNet: A Convolutional Network for Real-Time 6-DOF Camera Relocalization](https://arxiv.org/abs/1505.07427)" - ICCV 2015
+
+- MapNet: "[Geometry-Aware Learning of Maps for Camera Localization](https://arxiv.org/abs/1712.03342)" - CVPR 2018 (Spotlight).
+
+- AtLoc: "[AtLoc: Attention Guided Camera Localization](https://arxiv.org/abs/1909.03557)" - AAAI 2020
 
 `MapNet++` and `MapNet+PGO` are **NOT** implemented in this repository. 
 
@@ -10,7 +14,7 @@ The code was forked from official PyTorch implementation: https://github.com/NVl
 
 - Python 3.6
 - PyTorch 1.5.1 + Torchvision 0.6.1
-- mmcv
+- pyyaml (for parsing `.yaml` configure files)
 - numpy
 - matplotlib
 - scipy
@@ -25,7 +29,7 @@ This repository made the following modifications compared to official implements
 
 - update PyTorch 0.4.1 to PyTorch 1.5.1
 
-- Manage the classes (DATASETS, MODELS, BACKBONES, CRITERION, OPTIMIZER, PIPELINES) with a unified Register in `mmcv` for code simplicity
+- Manage the classes (DATASETS, MODELS, BACKBONES, CRITERION, OPTIMIZER, PIPELINES) with a unified Register in for code simplicity (refer to `mmcv` library)
 
 - Parameters are all specified with `.yaml` configure files. For example, the configure for training and testing the `mapnet` on `SevenScenes` is as follows:
 
