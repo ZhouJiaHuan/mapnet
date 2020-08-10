@@ -3,8 +3,8 @@ import os.path as osp
 import numpy as np
 from torch.utils.data import Dataset
 
-from mapnet.utils.pose_utils import process_poses
-from mapnet.utils.img_utils import load_image
+from ..utils.pose_utils import process_poses
+from ..utils.img_utils import load_image
 
 from ..registry import DATASETS
 

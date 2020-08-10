@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 import torch.cuda
 from torch.utils.data import DataLoader
 
-from mapnet.datasets import build_transforms
-from mapnet.builder import build_backbone, build_dataset, build_model
-from mapnet.apis.train import load_state_dict, step_feedfwd
-from mapnet.utils.pose_utils import qexp
-from mapnet.utils.pose_utils import quaternion_angular_error as qae
+from ..datasets import build_transforms
+from ..builder import build_backbone, build_dataset, build_model
+from ..apis.train import load_state_dict, step_feedfwd
+from ..utils.pose_utils import qexp
+from ..utils.pose_utils import quaternion_angular_error as qae
 
 
 class Inference(object):

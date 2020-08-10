@@ -1,6 +1,6 @@
 import torch
 from torchvision import transforms
-from mapnet.datasets.compose import Compose
+from ..datasets.compose import Compose
 from ..registry import PIPELINES
 
 
