@@ -165,6 +165,8 @@ where `--show` means drawing result and `--val` means run validation on val set.
 python tools/eval.py --help
 ```
 
+If you meet some ERRORS, please run the test codes Iin `test_codes/` for debug.
+
 Experimental result with `mapnet` on `SevenScenes` :
 
 | Scene       | official result      | result                            |
