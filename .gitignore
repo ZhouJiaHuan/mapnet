@@ -239,17 +239,12 @@ tags
 #
 #
 # model file
-scripts/logs/
-*.out
 # data
 data/*
 .vscode/*
-test_codes/*
-
-
+test_codes/
 data/
 logs/
-test_codes/
 app/
 .vscode/
 *.pyc
