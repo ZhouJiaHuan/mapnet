@@ -6,10 +6,11 @@ import sys
 import glob
 import time
 import numpy as np
-from mmcv import Config
+
 sys.path.append('.')
 from mapnet.apis import Inference
 from mapnet.utils.img_utils import load_image
+from mapnet.utils.yaml_utils import parse_yaml
 
 
 def main():
@@ -17,7 +18,7 @@ def main():
     img_list = glob.glob(img_dir+"*.color.png")
     weights = "logs/UnoRobot/mapnet_corridor/epoch_300.pth.tar"
     cfg_path = "configs/UnoRobot/mapnet_corridor.yaml"
-    cfgs = Config.fromfile(cfg_path)
+    cfgs = parse_yaml(cfg_path)
     print("config file loaded from {}".format(cfg_path))
     t0 = time.time()
     infer = Inference(cfgs, weights)
