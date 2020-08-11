@@ -15,8 +15,9 @@ The code was forked from official PyTorch implementation: https://github.com/NVl
 - Python 3.6
 - PyTorch 1.5.1 + Torchvision 0.6.1
 - pyyaml (for parsing `.yaml` configure files)
+- easydict (for managing the configures)
 - numpy
-- matplotlib
+- matplotlib==3.2.2 (higher version may cause some problems)
 - scipy
 - colour-demosaicing
 - transforms3d
